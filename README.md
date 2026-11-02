@@ -4,7 +4,7 @@ A student companion to **Claude Agent SDK TypeScript version 0.3.310**, by Luis 
 
 Learn **Lesson 4: Options and Session Configuration** by choosing a task, workspace, environment, capabilities, approvals, output format, limits, and session behavior. The application turns those choices into a server-validated query preview and can execute the configuration through the real SDK.
 
-![Configuration Studio with a real structured-output run](docs/configuration-studio.png)
+![Refreshed course interface with larger text](docs/visual-refresh-desktop.png)
 
 ## Run locally
 
@@ -144,3 +144,5 @@ On Linux, use `npx playwright install --with-deps chromium` if needed. GitHub Ac
 Documentation evolves; the pinned package declarations are this sample's code contract.
 
 MIT © Luis Coco Enríquez. Independent educational sample; not an official Anthropic product.
+
+See [visual style and reading controls](docs/visual-style.md) for the refreshed reference palette, larger typography, and persistent text-size setting.
