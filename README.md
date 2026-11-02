@@ -1,4 +1,4 @@
-# Lesson 04 · Configuration Studio
+# Lesson 04 Configuration Studio
 
 A student companion to **Claude Agent SDK TypeScript version 0.3.310**, by Luis Coco Enríquez.
 
