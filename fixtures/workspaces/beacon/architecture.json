@@ -1,0 +1,13 @@
+{
+  "projectName": "Beacon Notes",
+  "components": [
+    "notes.ts: note and tag rules",
+    "cli.ts: learner input",
+    "json-store.ts: file storage"
+  ],
+  "constraints": [
+    "Local JSON persistence",
+    "Concurrent writes need coordination",
+    "Validate external note data"
+  ]
+}

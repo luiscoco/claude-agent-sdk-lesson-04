@@ -1,0 +1,9 @@
+{
+  "projectName": "Atlas Tasks",
+  "components": [
+    "tasks.ts: domain operations",
+    "cli.ts: command input",
+    "memory-store.ts: volatile storage"
+  ],
+  "constraints": ["No database", "No authentication", "Domain functions should stay testable"]
+}

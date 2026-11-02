@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f7f7" />
+    <title>Lesson 04 · Configuration Studio</title>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/"
+        ><span class="brand-icon">{ }</span
+        ><span>Configuration Studio<small>LESSON 04</small></span></a
+      >
+      <div class="top-links">
+        <span class="version">SDK 0.3.310</span
+        ><a href="https://github.com/luiscoco/claude-agent-sdk-lesson-04">View source ↗</a>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">OPTIONS &amp; SESSION CONFIGURATION</p>
+          <h1>Give every query<br /><span>a clear context.</span></h1>
+          <p class="intro">
+            Choose the task, workspace, capabilities, and limits.<br class="desktop" />
+            See exactly how those choices become SDK options.
+          </p>
+          <div class="hero-badges">
+            <span class="pill">● Three practical configuration recipes</span
+            ><span>Claude Agent SDK · TypeScript 0.3.310</span>
+          </div>
+        </div>
+        <aside class="lesson-card">
+          <strong>04<span> / 09</span></strong>
+          <h2>One task. Explicit settings.</h2>
+          <p>Context, capability, approval,<br />output, and continuity.</p>
+          <hr />
+          <small>A course companion by<br /><b>Luis Coco Enríquez</b></small>
+        </aside>
+      </section>
+      <nav class="tabs" role="tablist" aria-label="Lesson activities">
+        <button role="tab" aria-selected="true" aria-controls="studio" id="tab-studio">
+          01 <span>Build a query</span></button
+        ><button
+          role="tab"
+          aria-selected="false"
+          aria-controls="guide"
+          id="tab-guide"
+          tabindex="-1"
+        >
+          02 <span>Options guide</span></button
+        ><button role="tab" aria-selected="false" aria-controls="quiz" id="tab-quiz" tabindex="-1">
+          03 <span>Check your understanding</span>
+        </button>
+      </nav>
+      <div id="notice" role="alert" hidden></div>
+      <section id="studio" role="tabpanel" aria-labelledby="tab-studio">
+        <div class="recipe-grid" id="recipes"></div>
+        <div class="mode-banner">
+          <div>
+            <strong id="mode-label">Local inspection · real MCP, no model</strong>
+            <p id="mode-description">
+              Review the configuration and call the bundled tool directly. The prompt is executed
+              only in live mode.
+            </p>
+          </div>
+          <span class="tag" id="key-status">CHECKING LIVE SETUP</span>
+        </div>
+        <div class="workbench studio-grid">
+          <form id="config-form" class="panel controls">
+            <p class="eyebrow muted">THE HOST CONFIGURATION</p>
+            <h2>Choose the operating context</h2>
+            <label for="workspace">Workspace · cwd</label
+            ><select id="workspace" data-config>
+              <option value="atlas">Atlas Tasks · task tracker</option>
+              <option value="beacon">Beacon Notes · notes organizer</option>
+            </select>
+            <p class="hint">Two bundled workspaces. No arbitrary server paths.</p>
+            <div class="control-group">
+              <label for="prompt">Task · prompt</label
+              ><textarea id="prompt" data-config rows="5"></textarea>
+              <p class="hint">
+                State the goal and expected answer. Environment values are not automatically prompt
+                context.
+              </p>
+            </div>
+            <div class="control-group">
+              <label for="environment">Subprocess environment · LESSON_ENV</label
+              ><select id="environment" data-config>
+                <option value="development">development</option>
+                <option value="production">production</option>
+              </select>
+              <p class="hint">
+                The host preserves required platform and auth values. The preview never exposes
+                their contents.
+              </p>
+            </div>
+            <div class="control-group">
+              <h3>Bound the run</h3>
+              <div class="limits-grid">
+                <label for="max-turns"
+                  >Max turns<input
+                    id="max-turns"
+                    data-config
+                    type="number"
+                    min="2"
+                    max="8"
+                    value="6" /></label
+                ><label for="budget"
+                  >Budget · USD<input
+                    id="budget"
+                    data-config
+                    type="number"
+                    min="0.03"
+                    max="0.5"
+                    step="0.01"
+                    value="0.25"
+                /></label>
+              </div>
+              <label for="timeout"
+                >Host timeout · seconds<input
+                  id="timeout"
+                  data-config
+                  type="number"
+                  min="15"
+                  max="120"
+                  value="90"
+              /></label>
+              <p class="hint">Turns, estimated cost, and wall-clock time are different limits.</p>
+            </div>
+            <div class="control-group">
+              <h3>Capabilities and approvals</h3>
+              <div class="policy-summary">
+                <span>Built-in tools <b>disabled</b></span
+                ><span>Custom tools <b>one bounded reader</b></span
+                ><span>Permission mode <b>default</b></span
+                ><span>Automatic allow list <b>empty</b></span>
+              </div>
+              <p class="hint">
+                canUseTool handles requests reaching the host. The custom handler separately
+                enforces its file allowlist.
+              </p>
+            </div>
+            <div class="control-group">
+              <label class="check-label"
+                ><input id="hook-events" data-config type="checkbox" checked />Include hook
+                lifecycle messages</label
+              ><label class="check-label"
+                ><input id="sandbox" data-config type="checkbox" />Require an OS sandbox</label
+              >
+              <p class="hint" id="sandbox-note">
+                Tools-only mode is not an OS sandbox. A required sandbox fails if unavailable.
+              </p>
+            </div>
+            <div id="continuity-controls" class="control-group" hidden>
+              <label for="continuation">Session behavior</label
+              ><select id="continuation" data-config>
+                <option value="new">New persistent session</option>
+                <option value="resume">Resume this workspace’s last successful session</option>
+              </select>
+              <p class="hint">
+                SDK transcripts stay in ignored .local/sdk-state. The browser cannot submit a
+                session ID.
+              </p>
+            </div>
+            <div class="control-group">
+              <label for="mode">Execution mode</label
+              ><select id="mode">
+                <option value="inspect">Local inspection · no model request</option>
+                <option value="live">Live SDK · model charges apply</option>
+              </select>
+              <p class="hint" id="live-note">Checking server-side key availability…</p>
+              <button id="run" class="primary" type="submit">Inspect locally <span>→</span></button
+              ><button id="stop" type="button" class="danger" hidden>Stop this run</button>
+            </div>
+          </form>
+          <div class="observation">
+            <section class="panel code-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow muted">YOUR CHOICES → SDK OPTIONS</p>
+                  <h2>Query configuration</h2>
+                </div>
+                <button id="copy" class="text-button">Copy example</button>
+              </div>
+              <div class="code-caption">
+                <span id="recipe-name">Read-only project brief</span
+                ><span>TypeScript · 0.3.310</span>
+              </div>
+              <pre id="code" class="query-code" aria-label="Generated query configuration">
+Loading the server-validated preview…</pre>
+              <details class="padded-details">
+                <summary>Inspect sanitized options and configuration notes</summary>
+                <pre id="options"></pre>
+                <ul id="notes"></ul>
+              </details>
+              <details class="padded-details" id="schema-details" hidden>
+                <summary>Inspect the structured output schema</summary>
+                <pre id="schema"></pre>
+              </details>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow muted">EXECUTION EVIDENCE</p>
+                  <h2>Scenario result</h2>
+                </div>
+                <span id="status" class="status">Ready to inspect</span>
+              </div>
+              <div class="result-box">
+                <p class="eyebrow" id="result-label">NO SCENARIO RUN YET</p>
+                <p id="result">
+                  Review the generated query. Inspect locally without a model, or run the same
+                  configuration through the real SDK.
+                </p>
+                <div id="result-meta" class="result-meta"></div>
+                <pre id="structured" hidden></pre>
+              </div>
+              <div class="run-events" id="events" aria-label="Scenario events"></div>
+              <div class="trace-footer">
+                <span>Selected events · no raw environment values</span
+                ><button id="export" class="text-button" disabled>Export trace ↓</button>
+              </div>
+            </section>
+            <div class="learning-note">
+              <strong>Context ≠ permission ≠ isolation.</strong>
+              <p>
+                <code>cwd</code> supplies context. <code>tools</code> selects built-ins.
+                <code>allowedTools</code> auto-approves. Sandbox settings are a separate execution
+                boundary.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="guide" role="tabpanel" aria-labelledby="tab-guide" hidden>
+        <div class="section-intro">
+          <p class="eyebrow">CONFIGURE BY RESPONSIBILITY</p>
+          <h2>Each option answers a different question.</h2>
+          <p>
+            These examples follow the installed 0.3.310 declarations, including corrections to
+            conceptual names used in the lesson.
+          </p>
+        </div>
+        <div id="guide-cards" class="method-cards"></div>
+        <div class="guide-grid">
+          <article class="panel">
+            <h3>Structured output in this version</h3>
+            <pre><code>const q = query({
+  prompt: 'Create a project brief',
+  options: {
+    outputFormat: {
+      type: 'json_schema',
+      schema: OUTPUT_SCHEMA,
+    },
+  },
+});
+
+// On a successful result:
+const brief = BriefSchema.parse(msg.structured_output);</code></pre>
+            <p class="hint">
+              The live structured recipe validates the SDK output in the host. Local inspection does
+              not generate an agent answer.
+            </p>
+          </article>
+          <article class="panel">
+            <h3>Continuity needs saved history</h3>
+            <pre><code>// First query:
+options: { persistSession: true, sessionId: newUuid }
+
+// Later query, same workspace:
+options: { persistSession: true, resume: savedId }</code></pre>
+            <p>
+              sessionStore is an alpha transcript mirror, not a replacement for persistence.
+              initializeTimeoutMs belongs to startup/prewarm preparation. See the compile-checked
+              examples and classroom guide.
+            </p>
+            <a
+              href="https://github.com/luiscoco/claude-agent-sdk-lesson-04/blob/main/docs/lesson-4-walkthrough.md"
+              >Open the classroom walkthrough ↗</a
+            >
+          </article>
+        </div>
+      </section>
+      <section id="quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+        <div class="section-intro">
+          <p class="eyebrow">CHECK YOUR UNDERSTANDING</p>
+          <h2>Can you explain each setting?</h2>
+          <p>Build a query first, then check these four distinctions.</p>
+        </div>
+        <form id="quiz-form">
+          <div id="questions"></div>
+          <button class="primary" type="submit">Check my answers</button>
+          <p id="quiz-score" role="status"></p>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <span>Lesson 4 · Options and Session Configuration</span
+      ><span
+        >Luis Coco Enríquez · MIT licensed ·
+        <a href="https://github.com/luiscoco/claude-agent-sdk-lesson-03"
+          >Lesson 3 companion ↗</a
+        ></span
+      >
+    </footer>
+    <script type="module" src="/src/client/main.ts"></script>
+  </body>
+</html>
