@@ -1,6 +1,7 @@
 import './style.css';
 import './course-theme.css';
 import './course-theme.js';
+import { renderMarkdown } from './markdown.js';
 import { createEventParser } from '../shared/sse.js';
 import {
   DEFAULT_CONFIG,
@@ -18,6 +19,12 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 const text = (id: string, value: string) => {
   $(id).textContent = value;
 };
+// Model output is rendered as Markdown; host placeholders and errors stay plain text.
+function showResult(value: string, markdown = false) {
+  if (markdown) renderMarkdown($('result'), value);
+  else text('result', value);
+  $('result').classList.toggle('markdown', markdown);
+}
 let recipe: Recipe = 'review';
 let preview: Preview | undefined;
 let metadata: Metadata | undefined;
@@ -202,7 +209,7 @@ $('config-form').addEventListener('submit', async (event) => {
   result = undefined;
   $('events').replaceChildren();
   $('structured').hidden = true;
-  text('result', 'Waiting for the scenario…');
+  showResult('Waiting for the scenario…');
   text('result-label', mode === 'live' ? 'REAL SDK EXECUTION' : 'LOCAL MCP INSPECTION');
   text('status', 'Running');
   $('result-meta').replaceChildren();
@@ -230,7 +237,7 @@ $('config-form').addEventListener('submit', async (event) => {
       append(event);
       if (event.kind === 'result') {
         result = event.data as RunResult;
-        text('result', result.text);
+        showResult(result.text, true);
         $('structured').hidden = result.structured === undefined;
         text('structured', JSON.stringify(result.structured, null, 2) || '');
         const tags = [
@@ -251,7 +258,7 @@ $('config-form').addEventListener('submit', async (event) => {
         );
       }
       if (event.kind === 'error') {
-        text('result', event.detail);
+        showResult(event.detail);
         text('status', 'Failed');
       }
       if (event.kind === 'done') {
@@ -277,7 +284,7 @@ $('config-form').addEventListener('submit', async (event) => {
     const cancelled = controller.signal.aborted;
     text('status', cancelled ? 'Cancelled' : 'Failed');
     const detail = cancelled ? 'The host cancelled this scenario.' : (error as Error).message;
-    text('result', detail);
+    showResult(detail);
     append({ kind: 'error', title: cancelled ? 'Cancelled' : 'Scenario failed', detail });
   } finally {
     setRunning(false);
