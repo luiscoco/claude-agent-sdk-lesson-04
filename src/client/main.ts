@@ -1,6 +1,7 @@
 import './style.css';
 import './course-theme.css';
 import './course-theme.js';
+import { observeCode } from './highlight.js';
 import { renderMarkdown } from './markdown.js';
 import { createEventParser } from '../shared/sse.js';
 import {
@@ -35,6 +36,7 @@ let result: RunResult | undefined;
 let traceConfig: Config | undefined;
 let generation = 0;
 let previewTimer: ReturnType<typeof setTimeout> | undefined;
+observeCode();
 function notice(message = '') {
   text('notice', message);
   $('notice').hidden = !message;
